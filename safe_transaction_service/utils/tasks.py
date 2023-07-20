@@ -56,7 +56,6 @@ def shutdown_worker():
 def only_one_running_task(
     task: CeleryTask,
     lock_name_suffix: Optional[str] = None,
-    blocking_timeout: int = 1,
     lock_timeout: Optional[int] = LOCK_TIMEOUT,
     gevent: bool = True,
 ):
@@ -80,9 +79,7 @@ def only_one_running_task(
     lock_name = f"locks:tasks:{task.name}"
     if lock_name_suffix:
         lock_name += f":{lock_name_suffix}"
-    with redis.lock(
-        lock_name, blocking_timeout=blocking_timeout, timeout=lock_timeout
-    ) as lock:
+    with redis.lock(lock_name, blocking=False, timeout=lock_timeout) as lock:
         try:
             ACTIVE_LOCKS.add(lock_name)
             yield lock
