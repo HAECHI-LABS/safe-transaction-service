@@ -12,6 +12,7 @@ from gnosis.safe.addresses import MASTER_COPIES, PROXY_FACTORIES
 
 from ...models import IndexingStatus, IndexingStatusType, ProxyFactory, SafeMasterCopy
 
+import sys
 
 @dataclass
 class CronDefinition:
@@ -190,21 +191,37 @@ class Command(BaseCommand):
                 )
 
         self.stdout.write(self.style.SUCCESS("Setting up Safe Contract Addresses"))
-        ethereum_client = EthereumClientProvider()
-        ethereum_network = ethereum_client.get_network()
-        if ethereum_network in MASTER_COPIES:
+        safe_master_copy_address = settings.SAFE_MASTER_COPY_ADDRESS
+        safe_master_copy_deployed_block_number = settings.SAFE_MASTER_COPY_DEPLOYED_BLOCK_NUMBER
+        safe_master_copy_version = settings.SAFE_MASTER_COPY_VERSION
+        safe_proxy_factory_address = settings.SAFE_PROXY_FACTORY_ADDRESS
+        safe_proxy_factory_deployed_block_number = settings.SAFE_PROXY_FACTORY_DEPLOYED_BLOCK_NUMBER
+
+        if any(x is None for x in [safe_master_copy_address, safe_master_copy_deployed_block_number, safe_master_copy_version, safe_proxy_factory_address, safe_proxy_factory_deployed_block_number]):
             self.stdout.write(
-                self.style.SUCCESS(f"Setting up {ethereum_network.name} safe addresses")
+                self.style.WARNING("Cannot detect a Safe Contracts Configuration")
             )
-            self._setup_safe_master_copies(MASTER_COPIES[ethereum_network])
-            self._setup_erc20_indexing()
-        if ethereum_network in PROXY_FACTORIES:
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f"Setting up {ethereum_network.name} proxy factory addresses"
-                )
+            sys.exit()
+
+        self.stdout.write(
+            self.style.SUCCESS(f"Setting up safe addresses")
+        )
+        self._setup_safe_master_copies([(
+            safe_master_copy_address,
+            safe_master_copy_deployed_block_number,
+            safe_master_copy_version
+        )])
+        self._setup_erc20_indexing()
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Setting up proxy factory addresses"
             )
-            self._setup_safe_proxy_factories(PROXY_FACTORIES[ethereum_network])
+        )
+        self._setup_safe_proxy_factories([(
+            safe_proxy_factory_address,
+            safe_proxy_factory_deployed_block_number
+        )])
 
         if not (
             ethereum_network in MASTER_COPIES and ethereum_network in PROXY_FACTORIES

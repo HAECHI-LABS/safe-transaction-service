@@ -525,3 +525,11 @@ SWAGGER_SETTINGS = {
         "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
     },
 }
+
+# Contract Addresses
+# ------------------------------------------------------------------------------
+SAFE_MASTER_COPY_ADDRESS = env("SAFE_MASTER_COPY_ADDRESS", default=None)
+SAFE_MASTER_COPY_DEPLOYED_BLOCK_NUMBER = env("SAFE_MASTER_COPY_DEPLOYED_BLOCK_NUMBER", default=None)
+SAFE_MASTER_COPY_VERSION = env("SAFE_MASTER_COPY_VERSION", default=None)
+SAFE_PROXY_FACTORY_ADDRESS = env("SAFE_PROXY_FACTORY_ADDRESS", default=None)
+SAFE_PROXY_FACTORY_DEPLOYED_BLOCK_NUMBER = env("SAFE_PROXY_FACTORY_DEPLOYED_BLOCK_NUMBER", default=None)
