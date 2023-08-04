@@ -223,13 +223,6 @@ class Command(BaseCommand):
             safe_proxy_factory_deployed_block_number
         )])
 
-        if not (
-            ethereum_network in MASTER_COPIES and ethereum_network in PROXY_FACTORIES
-        ):
-            self.stdout.write(
-                self.style.WARNING("Cannot detect a valid ethereum-network")
-            )
-
     def _setup_safe_master_copies(
         self, safe_master_copies: Sequence[Tuple[str, int, str]]
     ):
