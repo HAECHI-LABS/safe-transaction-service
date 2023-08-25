@@ -19,6 +19,7 @@ from safe_transaction_service.utils.utils import chunks
 from .element_already_processed_checker import ElementAlreadyProcessedChecker
 from .ethereum_indexer import EthereumIndexer, FindRelevantElementsException
 
+from ..models import SafeContract
 logger = getLogger(__name__)
 
 
@@ -98,7 +99,6 @@ class EventsIndexer(EthereumIndexer):
             "toBlock": to_block_number,
             "topics": [filter_topics],
         }
-
         if not self.IGNORE_ADDRESSES_ON_LOG_FILTER:
             # Search logs only for the provided addresses
             if self.query_chunk_size:
@@ -188,6 +188,11 @@ class EventsIndexer(EthereumIndexer):
         :param current_block_number: Current block number (for cache purposes)
         :return: LogReceipt for matching events
         """
+
+        ###
+        for safe_contract in SafeContract.objects.all():
+            addresses.append(safe_contract.address)
+        ###
         len_addresses = len(addresses)
         logger.debug(
             "%s: Filtering for events from block-number=%d to block-number=%d for %d addresses",

@@ -101,8 +101,8 @@ TASKS = [
     ),
     CeleryTaskConfiguration(
         name="safe_transaction_service.history.tasks.index_new_proxies_task",
-        description="Index new Proxies (every 15 seconds)",
-        interval=15,
+        description="Index new Proxies (every 4 seconds)",
+        interval=4,
         period=IntervalSchedule.SECONDS,
         enabled=settings.ETH_L2_NETWORK,
     ),
