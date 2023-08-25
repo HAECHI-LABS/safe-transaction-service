@@ -52,7 +52,7 @@ class SafeEventsIndexer(EventsIndexer):
     """
 
     IGNORE_ADDRESSES_ON_LOG_FILTER = (
-        True  # Search for logs in every address (like the ProxyFactory)
+        False  # Search for logs in every address (like the ProxyFactory)
     )
 
     @cached_property
