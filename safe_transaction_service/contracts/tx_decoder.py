@@ -83,6 +83,8 @@ from .decoder_abis.sight import (
 from .decoder_abis.snapshot import snapshot_delegate_registry_abi
 from .decoder_abis.timelock import timelock_abi
 
+from ..history.indexers.abis.gnosis import gnosis_safe_l2_v1_3_0_abi, proxy_factory_v1_3_0_abi
+
 logger = getLogger(__name__)
 
 
@@ -326,6 +328,7 @@ class SafeTxDecoder:
             get_safe_V1_0_0_contract(self.dummy_w3).abi,
             get_safe_V1_1_1_contract(self.dummy_w3).abi,
             get_safe_V1_3_0_contract(self.dummy_w3).abi,
+            gnosis_safe_l2_v1_3_0_abi # for HENESIS: abi가 변하면 여기에 추가해줘야한다. gnosis_safe_l2_v1_3_0_abi에 수정본이 들어있다.
         ]
 
         # Order is important. If signature is the same (e.g. renaming of `baseGas`) last elements in the list

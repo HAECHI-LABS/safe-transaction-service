@@ -116,6 +116,7 @@ class SafeEventsIndexer(EventsIndexer):
         event AddedOwner(address owner);
         event RemovedOwner(address owner);
         event ChangedThreshold(uint256 threshold);
+        event SetupOwners(address[] owners, uint256 threshold);
 
         # Incoming Ether
         event SafeReceived(
@@ -142,6 +143,7 @@ class SafeEventsIndexer(EventsIndexer):
             abi=proxy_factory_v1_3_0_abi
         )
         old_contract = get_safe_V1_1_1_contract(self.ethereum_client.w3)
+        # for HENESIS: event가 추가되면 여기를 수정해야한다.
         return [
             l2_contract.events.SafeMultiSigTransaction(),
             l2_contract.events.SafeModuleTransaction(),
@@ -159,6 +161,7 @@ class SafeEventsIndexer(EventsIndexer):
             l2_contract.events.AddedOwner(),
             l2_contract.events.RemovedOwner(),
             l2_contract.events.ChangedThreshold(),
+            l2_contract.events.SetupOwners(),
             # Incoming Ether
             l2_contract.events.SafeReceived(),
             # Changed FallbackHandler
@@ -319,6 +322,10 @@ class SafeEventsIndexer(EventsIndexer):
         elif event_name == "ChangedThreshold":
             internal_tx_decoded.function_name = "changeThreshold"
             args["_threshold"] = args.pop("threshold")
+        elif event_name == "SetupOwners":
+            internal_tx_decoded.function_name = "setupOwners"
+            args["_threshold"] = args.pop("threshold")
+            args["_owners"] = args.pop("owners")
         elif event_name == "ChangedFallbackHandler":
             internal_tx_decoded.function_name = "setFallbackHandler"
         elif event_name == "ChangedGuard":

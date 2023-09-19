@@ -1723,12 +1723,13 @@ class SafeStatusBase(models.Model):
 
         :return: `True` if corrupted, `False` otherwise
         """
-        safe_status_count = (
-            SafeStatus.objects.distinct("nonce")
-            .filter(address=self.address, nonce__lte=self.nonce)
-            .count()
-        )
-        return safe_status_count and safe_status_count <= self.nonce
+        # safe_status_count = (
+        #     SafeStatus.objects.distinct("nonce")
+        #     .filter(address=self.address, nonce__lte=self.nonce)
+        #     .count()
+        # )
+        # return safe_status_count and safe_status_count <= self.nonce
+        return False # Henesis Safe는 nonce가 incremental할 필요가 없다.
 
     @classmethod
     def from_status_instance(

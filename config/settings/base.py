@@ -456,7 +456,15 @@ ETH_EVENTS_UPDATED_BLOCK_BEHIND = env.int(
 ETH_REORG_BLOCKS = env.int(
     "ETH_REORG_BLOCKS", default=200 if ETH_L2_NETWORK else 10
 )  # Number of blocks from the current block number needed to consider a block valid/stable
-
+INDEX_INTERNAL_TXS_TASK_INTERVAL = env.int(
+    "INDEX_INTERNAL_TXS_TASK_INTERVAL", default=5
+)
+INDEX_SAFE_EVENTS_TASK_INTERVAL = env.int(
+    "INDEX_SAFE_EVENTS_TASK_INTERVAL", default=5
+)
+INDEX_NEW_PROXIES_TASK_INTERVAL = env.int(
+    "INDEX_NEW_PROXIES_TASK_INTERVAL", default=4
+)
 # Tokens
 # ------------------------------------------------------------------------------
 TOKENS_LOGO_BASE_URI = env.str(

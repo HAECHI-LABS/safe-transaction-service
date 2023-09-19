@@ -1,3 +1,4 @@
+# for HENESIS: event혹은 function이 수정 / 추가되면 여기에 ABI를 추가해야한다.
 gnosis_safe_l2_v1_3_0_abi = [
     {
         "anonymous": False,
@@ -11,6 +12,25 @@ gnosis_safe_l2_v1_3_0_abi = [
         ],
         "name": "AddedOwner",
         "type": "event",
+    },
+    {
+      "anonymous": False,
+      "inputs": [
+        {
+          "indexed": False,
+          "internalType": "address[]",
+          "name": "owners",
+          "type": "address[]"
+        },
+        {
+          "indexed": False,
+          "internalType": "uint256",
+          "name": "threshold",
+          "type": "uint256"
+        }
+      ],
+      "name": "SetupOwners",
+      "type": "event"
     },
     {
         "anonymous": False,
@@ -707,6 +727,24 @@ gnosis_safe_l2_v1_3_0_abi = [
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function",
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_owners",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_threshold",
+                "type": "uint256"
+            }
+        ],
+        "name": "setupOwners",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     },
     {"stateMutability": "payable", "type": "receive"},
 ]

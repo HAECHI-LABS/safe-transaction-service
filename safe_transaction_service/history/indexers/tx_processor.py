@@ -327,6 +327,7 @@ class SafeTxProcessor(TxProcessor):
         master_copy = internal_tx.to
         processed_successfully = True
 
+        # for HENESIS: function을 decode하려면 여기를 수정해야한다.
         if function_name == "setup" and contract_address != NULL_ADDRESS:
             # Index new Safes
             logger.debug("Processing Safe setup")
@@ -390,6 +391,13 @@ class SafeTxProcessor(TxProcessor):
                 old_owner = arguments["oldOwner"]
                 new_owner = arguments["newOwner"]
                 self.swap_owner(internal_tx, safe_last_status, old_owner, new_owner)
+                self.store_new_safe_status(safe_last_status, internal_tx)
+            elif function_name == "setupOwners":
+                logger.debug("Processing setup owners")
+                owners = arguments["_owners"]
+                threshold = arguments["_threshold"]
+                safe_last_status.threshold = threshold
+                safe_last_status.owners = owners
                 self.store_new_safe_status(safe_last_status, internal_tx)
             elif function_name == "changeThreshold":
                 logger.debug("Processing threshold change")
@@ -632,7 +640,7 @@ class SafeTxProcessor(TxProcessor):
                             update_fields=["signature", "signature_type"]
                         )
 
-                safe_last_status.nonce = nonce + 1
+                safe_last_status.nonce = nonce
                 self.store_new_safe_status(safe_last_status, internal_tx)
             elif function_name == "execTransactionFromModule":
                 logger.debug("Not processing execTransactionFromModule")
